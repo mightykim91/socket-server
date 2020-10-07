@@ -2,12 +2,17 @@ const express = require('express')
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
+const {v4: uuidV4} = require('uuid')
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
     res.json({message: "Welcome"})
+})
+
+app.get('/:roomId/:userId/', (req, res) => {
+    res.render('call', {roomId: "a"+req.params.roomId+"a" , userId: req.params.userId})
 })
 
 app.all("/*", function (req, res, next) {
@@ -18,18 +23,17 @@ app.all("/*", function (req, res, next) {
 
 const rooms = []
 
-
 io.on('connection', (socket) => {
     //채팅방 접속
-    const user = ''
-
+    console.log('socket.io connected')
     socket.on('join', (roomId, userId) => {
         socket.join(roomId, () => {
             msg = userId + " 님이 방에 접속했습니다.";
             if (!roomId in rooms) {
               rooms.push(roomId);
             }
-            io.to(roomId).emit('join', userId, msg);
+            console.log("서버사이드", roomId, userId, msg)
+            socket.to(roomId).broadcast.emit('user-connected', userId, msg);
         })
     })
 
