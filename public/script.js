@@ -1,8 +1,8 @@
-//const socket = io('https://j3a405.p.ssafy.io')
+const socket = io('http://j3a405.p.ssafy.io')
 const myPeer = new Peer(userId, {
     host: 'j3a405.p.ssafy.io',
-    port: 9000,
-    path: '/myapp',
+    port: 3000,
+    path: '/peer',
     // debug: 3,
 })
 

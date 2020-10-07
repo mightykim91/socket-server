@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 443
+EXPOSE 5000
 
 CMD npm run serve
