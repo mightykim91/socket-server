@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000')
+//const socket = io('https://j3a405.p.ssafy.io')
 const myPeer = new Peer(userId, {
     host: 'j3a405.p.ssafy.io',
     port: 9000,

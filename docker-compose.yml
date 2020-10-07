@@ -16,7 +16,7 @@ services:
     container_name: webserver
     restart: unless-stopped
     ports: 
-      - "3030:3030"
+      - "4000:4000"
     volumes:
       - web-root:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
@@ -46,7 +46,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/ubuntu/socket_deploy/socket-server/views/
+      device: /home/ubuntu/socket-server/views/
       # device: /Users/yeonsukim/Documents/socket-server/views
       o: bind
 networks:

@@ -3,6 +3,19 @@ const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const {v4: uuidV4} = require('uuid')
+const https = require('https')
+const http = require('http')
+const fs = require('fs')
+
+const options = {
+	ca: fs.readFileSync('/etc/letsencrypt/live/j3a405.p.ssafy.io/fullchain.pem'),
+	key: fs.readFileSync('/etc/letsencrypt/live/j3a405.p.ssafy.io/privkey.pem'),
+	cert: fs.readFileSync('/etc/letsencrypt/live/j3a405.p.ssafy.io/cert.pem')
+}
+
+https.createServer(options, app).listen(443);
+http.createServer(app).listen(3000);
+
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -21,8 +34,21 @@ app.all("/*", function (req, res, next) {
   next();
 });
 
-const rooms = []
 
+//const lex = require('greenlock-express').create({
+//	version: 'draft-11',
+//	configDir: '/etc/letsencrypt',
+//	server: 'https://acme-v02.api.letsencrypt.org/directory',
+//	email: 'mightykim91@naver.com',
+//	approveDomains:['j3a405.p.ssafy.io'],
+//	agreeTos: true,
+//	renewWithin: 90*24*60*1000,
+//	renewBy: 89*24*60*60*1000
+//})
+
+
+const rooms = []
+                
 io.on('connection', (socket) => {
     //채팅방 접속
     console.log('socket.io connected')
@@ -50,6 +76,3 @@ io.on('connection', (socket) => {
         io.to(roomId).emit('chat', userId, chat)
     })
 })
-
-
-server.listen(3000)
